@@ -1,0 +1,38 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "platformer-level-1.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "platformer-level-1.tmx": {
+            "scale": 0.9782031250000001,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 604.1689960865746,
+                "y": 320.4855842185129
+            }
+        },
+        "platformer-level-1.tmx#spritesheet-backgrounds-default": {
+            "scaleInDock": 0.25
+        },
+        "platformer-level-1.tmx#tilesheet_complete": {
+            "scaleInDock": 0.75
+        }
+    },
+    "last.externalTilesetPath": "C:/Users/tbspe/Downloads/kenney_new-platformer-pack-1.0/Spritesheets",
+    "last.imagePath": "C:/Users/tbspe/CMPM_120/game2/assets",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 40,
+    "openFiles": [
+        "platformer-level-1.tmx"
+    ],
+    "project": "platformer-level-1.tiled-project",
+    "recentFiles": [
+        "platformer-level-1.tmx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)"
+}
