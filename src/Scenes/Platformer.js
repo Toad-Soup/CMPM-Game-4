@@ -16,12 +16,12 @@ class Platformer extends Phaser.Scene {
     create() {
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
         // 45 tiles wide and 25 tiles tall.
-        this.map = this.add.tilemap("platformer-level-1", 32, 32, 40, 30);
+        this.map = this.add.tilemap("platformer-level-1", 32, 32, 121, 63);
 
         // Add a tileset to the map
         // First parameter: name we gave the tileset in Tiled
         // Second parameter: key for the tilesheet (from this.load.image in Load.js)
-        this.tileset = this.map.addTilesetImage("tiles", "tilemap_tiles");
+        this.tileset = this.map.addTilesetImage("tilesheet_complete", "tilemap_tiles");
         this.backset = this.map.addTilesetImage("bacground color", "background_tiles");
         this.backset2 = this.map.addTilesetImage("background tiles", "background_details");
 
@@ -45,15 +45,10 @@ class Platformer extends Phaser.Scene {
             collides: true
         });
 
-        // Make it collidable
-        this.extraLayer.setCollisionByProperty({
-            collides: true
-        });
 
         this.coin = this.map.createFromObjects("coins", {
             name: "coins",
             key: "tilemap_sheet",
-            //frame: 151
         });
 
         this.spike1 = this.map.createFromObjects("spikes", {
@@ -77,7 +72,7 @@ class Platformer extends Phaser.Scene {
         my.vfx = {};
 
         // set up player avatar
-        my.sprite.player = this.physics.add.sprite(150, 405, "platformer_characters", "tile_0000.png").setScale(SCALE)
+        my.sprite.player = this.physics.add.sprite(100, 700, "platformer_characters", "tile_0000.png").setScale(SCALE)
         my.sprite.player.setCollideWorldBounds(true);
 
         // Enable collision handling
