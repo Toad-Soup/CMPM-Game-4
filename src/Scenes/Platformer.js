@@ -8,7 +8,7 @@ class Platformer extends Phaser.Scene {
         this.ACCELERATION = 400;
         this.DRAG = 1000;    // DRAG < ACCELERATION = icy slide
         this.physics.world.gravity.y = 1200;
-        this.JUMP_VELOCITY = -600;
+        this.JUMP_VELOCITY = -700;
         this.PARTICLE_VELOCITY = 50;
         this.SCALE = 2.0;
     }
@@ -45,7 +45,6 @@ class Platformer extends Phaser.Scene {
             collides: true
         });
 
-
         this.coin = this.map.createFromObjects("coins", {
             name: "coins",
             key: "tilemap_sheet",
@@ -57,22 +56,32 @@ class Platformer extends Phaser.Scene {
             frame: 861
         });
 
+        this.water1 = this.map.createFromObjects("water", {
+            name: "water",
+            key: "water_sheet",
+            frame: 992
+        });
+
         this.physics.world.enable(this.coin, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.spike1, Phaser.Physics.Arcade.STATIC_BODY);
+        this.physics.world.enable(this.water1, Phaser.Physics.Arcade.STATIC_BODY);
 
         // Create a Phaser group out of the array this.coins
         // This will be used for collision detection below.
         this.coinGroup = this.add.group(this.coin);
 
-        this.spikeGroup = this.add.group(this.spike1);
-
         this.totalCoins = this.coinGroup.getChildren().length;
         this.collectedCoins = 0;
 
+        this.spikeGroup = this.add.group(this.spike1);
+        this.waterGroup = this.add.group(this.water1);
+
         my.vfx = {};
 
+        this.physics.world.setBounds(0, 0, 4000, 2005);
+
         // set up player avatar
-        my.sprite.player = this.physics.add.sprite(100, 700, "platformer_characters", "tile_0000.png").setScale(SCALE)
+        my.sprite.player = this.physics.add.sprite(200, 1110, "platformer_characters", "tile_0000.png").setScale(2)
         my.sprite.player.setCollideWorldBounds(true);
 
         // Enable collision handling
@@ -116,6 +125,10 @@ class Platformer extends Phaser.Scene {
                 this.gameOver();
         });
 
+        this.physics.add.overlap(my.sprite.player, this.waterGroup, (obj1, obj2) => {    
+                this.gameOver();
+        });
+
         // set up Phaser-provided cursor key input
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -127,27 +140,14 @@ class Platformer extends Phaser.Scene {
             this.physics.world.debugGraphic.clear()
         }, this);
 
-        this.cameras.main.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
-        //console.log(this.map.widthInPixels);
+        this.cameras.main.setBounds(0, 0, 3600, 2005);
         this.cameras.main.startFollow(my.sprite.player, true, 0.25, 0.25); // (target, [,roundPixels][,lerpX][,lerpY])
         this.cameras.main.setDeadzone(50, 50);
-        this.cameras.main.setZoom(2.0);
-
-        /*my.vfx.player = this.add.particles(my.sprite.player.x, my.sprite.player.y, "kenny-particles", {
-            frame: "star_06.png", 
-            lifespan: 500,
-            speed: 0,                     // Stationary
-            gravityY: 0,
-            quantity: 1,
-            alpha: { start: 1, end: 0 },  // Fade out
-            scale: { start: 0.2, end: 0 }, // Optional: shrink out
-        })//.explode(1); // Emit a single particle
-        */
+        this.cameras.main.setZoom(1.0);
 
         this.time.addEvent({
             delay: 500,        // Delay in milliseconds (2000ms = 2s)
             callback: () => {
-                console.log("This runs every 2 seconds");
                 // Call your custom logic here
                 my.vfx.player = this.add.particles(my.sprite.player.x + Phaser.Math.Between(-10, 10), my.sprite.player.y +Phaser.Math.Between(-20, 20), "kenny-particles", {
                     frame: "star_06.png", 

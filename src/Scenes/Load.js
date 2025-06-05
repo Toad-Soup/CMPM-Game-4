@@ -26,6 +26,11 @@ class Load extends Phaser.Scene {
             frameHeight: 30
         });
 
+        this.load.spritesheet("water_sheet", "tilesheet_complete.png", {
+            frameWidth: 32,
+            frameHeight: 32
+        });
+
         //preload the audio
         this.load.audio("jump", "proud-fart.mp3");
         this.load.audio("womp", "pepSound3.ogg");
