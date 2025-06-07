@@ -81,7 +81,7 @@ class Platformer extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, 4000, 2005);
 
         // set up player avatar
-        my.sprite.player = this.physics.add.sprite(200, 1110, "platformer_characters", "tile_0000.png").setScale(2)
+        my.sprite.player = this.physics.add.sprite(200, 1110, 'playerAtlas', 'playerGreen_stand.png');
         my.sprite.player.setCollideWorldBounds(true);
 
         // Enable collision handling
@@ -168,22 +168,29 @@ class Platformer extends Phaser.Scene {
 
     update() {
 
+        const isOnGround = my.sprite.player.body.blocked.down;
+
+        if(!isOnGround) {
+            my.sprite.player.anims.play('jump');
+        }
+
         if(cursors.left.isDown) {
             my.sprite.player.setAccelerationX(-this.ACCELERATION);
-            my.sprite.player.resetFlip();
-            my.sprite.player.anims.play('walk', true);
+            my.sprite.player.setFlip(true, false);
+                my.sprite.player.anims.play('walk', true)
 
         } else if(cursors.right.isDown) {
            my.sprite.player.setAccelerationX(this.ACCELERATION);
-            my.sprite.player.setFlip(true, false);
-            my.sprite.player.anims.play('walk', true);
+            my.sprite.player.resetFlip();
+                my.sprite.player.anims.play('walk', true);
 
         } else {
-            // TODO: set acceleration to 0 and have DRAG take over
             my.sprite.player.setAccelerationX(0);
             my.sprite.player.setDragX(this.DRAG);
             my.sprite.player.anims.play('idle');
+            
         }
+
 
         // player jump
         // note that we need body.blocked rather than body.touching b/c the former applies to tilemap tiles and the latter to the "ground"
@@ -195,11 +202,6 @@ class Platformer extends Phaser.Scene {
             //this.sound.play("jump", {
             //    volume: 1   // Can adjust volume using this, goes from 0 to 1
             //});
-
-            if (my.vfx.jump){
-                my.vfx.jump.stop();
-            }
-            
             my.vfx.jump = this.add.particles(my.sprite.player.x, my.sprite.player.y + 40, "kenny-particles", {
                 frame: ["smoke_06.png"],
                 lifespan: 300,
@@ -212,15 +214,10 @@ class Platformer extends Phaser.Scene {
                 //on: false // Not emitting by default
             });
 
-            //this.time.delayedCall(100, () => {
-            //    my.vfx.jump.stop();
-            //});
-
             my.vfx.jump.explode(1);
-            
-
         }
-
+        
+    
         if(Phaser.Input.Keyboard.JustDown(this.rKey)) {
             this.scene.restart();
         }

@@ -41,38 +41,44 @@ class Load extends Phaser.Scene {
 
         this.load.multiatlas("kenny-particles", "kenny-particles.json");
 
+        //load inm the atlas for the new player sprite
+        this.load.atlasXML('playerAtlas', 'spritesheet_players.png', 'spritesheet_players.xml');
+
+
     }
 
     create() {
-        this.anims.create({
-            key: 'walk',
-            frames: this.anims.generateFrameNames('platformer_characters', {
-                prefix: "tile_",
-                start: 0,
-                end: 1,
-                suffix: ".png",
-                zeroPad: 4
-            }),
-            frameRate: 15,
-            repeat: -1
-        });
 
-        this.anims.create({
-            key: 'idle',
-            defaultTextureKey: "platformer_characters",
-            frames: [
-                { frame: "tile_0000.png" }
-            ],
-            repeat: -1
-        });
+this.anims.create({
+    key: 'walk',
+    frames: this.anims.generateFrameNames('playerAtlas', {
+        frames: [
+            'playerGreen_walk1.png',
+            'playerGreen_walk2.png',
+            'playerGreen_walk3.png',
+            'playerGreen_walk2.png'
+        ]
+    }),
+    frameRate: 15,
+    repeat: -1
+});
 
-        this.anims.create({
-            key: 'jump',
-            defaultTextureKey: "platformer_characters",
+    this.anims.create({
+        key: 'jump',
+        frames: this.anims.generateFrameNames('playerAtlas', {
             frames: [
-                { frame: "tile_0001.png" }
-            ],
-        });
+                'playerGreen_up2.png'
+            ]
+        }),
+    });
+
+    this.anims.create({
+        key: 'idle',
+        frames: [
+            { key: 'playerAtlas', frame: 'playerGreen_stand.png' },
+        ],
+        repeate: -1
+    });
 
          // ...and pass to the next Scene
          this.scene.start('title');
