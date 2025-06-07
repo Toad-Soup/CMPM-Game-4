@@ -16,6 +16,9 @@ class Load extends Phaser.Scene {
         this.load.image("background_tiles", "set2_background.png");
         this.load.image("background_details", "set2_tiles.png");
 
+        this.load.image('titlescreen', 'titleScreen.png');
+        this.load.image('titlescreen2', 'titleScreen2.png');
+
         this.load.spritesheet("tilemap_sheet", "yellowCrystal.png", {
             frameWidth: 32,
             frameHeight: 30
@@ -32,7 +35,7 @@ class Load extends Phaser.Scene {
         });
 
         //preload the audio
-        this.load.audio("jump", "proud-fart.mp3");
+        //this.load.audio("jump", "proud-fart.mp3");
         this.load.audio("womp", "pepSound3.ogg");
         this.load.audio("collect", "powerUp7.ogg");
 
@@ -72,7 +75,7 @@ class Load extends Phaser.Scene {
         });
 
          // ...and pass to the next Scene
-         this.scene.start("platformerScene");
+         this.scene.start('title');
     }
 
     // Never get here since a new scene is started in create()
