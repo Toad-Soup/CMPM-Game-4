@@ -44,7 +44,6 @@ class Load extends Phaser.Scene {
         //load inm the atlas for the new player sprite
         this.load.atlasXML('playerAtlas', 'spritesheet_players.png', 'spritesheet_players.xml');
 
-
     }
 
     create() {
@@ -53,10 +52,8 @@ this.anims.create({
     key: 'walk',
     frames: this.anims.generateFrameNames('playerAtlas', {
         frames: [
-            'playerGreen_walk1.png',
             'playerGreen_walk2.png',
-            'playerGreen_walk3.png',
-            'playerGreen_walk2.png'
+            'playerGreen_walk3.png'
         ]
     }),
     frameRate: 15,
@@ -67,7 +64,7 @@ this.anims.create({
         key: 'jump',
         frames: this.anims.generateFrameNames('playerAtlas', {
             frames: [
-                'playerGreen_up2.png'
+                'playerGreen_up1.png'
             ]
         }),
     });
@@ -77,7 +74,7 @@ this.anims.create({
         frames: [
             { key: 'playerAtlas', frame: 'playerGreen_stand.png' },
         ],
-        repeate: -1
+        repeat: -1
     });
 
          // ...and pass to the next Scene

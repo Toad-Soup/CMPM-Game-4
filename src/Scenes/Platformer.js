@@ -50,12 +50,6 @@ class Platformer extends Phaser.Scene {
             key: "tilemap_sheet",
         });
 
-        this.spike1 = this.map.createFromObjects("spikes", {
-            name: "spike",
-            key: "spike_sheet",
-            frame: 861
-        });
-
         this.water1 = this.map.createFromObjects("water", {
             name: "water",
             key: "water_sheet",
@@ -63,7 +57,6 @@ class Platformer extends Phaser.Scene {
         });
 
         this.physics.world.enable(this.coin, Phaser.Physics.Arcade.STATIC_BODY);
-        this.physics.world.enable(this.spike1, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.water1, Phaser.Physics.Arcade.STATIC_BODY);
 
         // Create a Phaser group out of the array this.coins
@@ -73,7 +66,6 @@ class Platformer extends Phaser.Scene {
         this.totalCoins = this.coinGroup.getChildren().length;
         this.collectedCoins = 0;
 
-        this.spikeGroup = this.add.group(this.spike1);
         this.waterGroup = this.add.group(this.water1);
 
         my.vfx = {};
@@ -82,6 +74,8 @@ class Platformer extends Phaser.Scene {
 
         // set up player avatar
         my.sprite.player = this.physics.add.sprite(200, 1110, 'playerAtlas', 'playerGreen_stand.png');
+        my.sprite.player.displayWidth = 38;
+        my.sprite.player.displayHeight = 50;
         my.sprite.player.setCollideWorldBounds(true);
 
         // Enable collision handling
@@ -169,6 +163,7 @@ class Platformer extends Phaser.Scene {
     update() {
 
         const isOnGround = my.sprite.player.body.blocked.down;
+        console.log("On Ground:", my.sprite.player.body.blocked.down);
 
         if(!isOnGround) {
             my.sprite.player.anims.play('jump');
@@ -195,6 +190,7 @@ class Platformer extends Phaser.Scene {
         // player jump
         // note that we need body.blocked rather than body.touching b/c the former applies to tilemap tiles and the latter to the "ground"
         if(!my.sprite.player.body.blocked.down) {
+            console.log("here")
             my.sprite.player.anims.play('jump');
         }
         if(my.sprite.player.body.blocked.down && Phaser.Input.Keyboard.JustDown(cursors.up)) {
