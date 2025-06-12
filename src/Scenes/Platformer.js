@@ -286,9 +286,9 @@ class Platformer extends Phaser.Scene {
     }
 
     gameOver() {
-        ///this.sound.play("womp", {
-            //volume: 1   // Can adjust volume using this, goes from 0 to 1
-        //});
+        this.sound.play("womp", {
+            volume: 1   // Can adjust volume using this, goes from 0 to 1
+        });
         this.add.text(my.sprite.player.x, my.sprite.player.y - 100, 'GAME OVER!', {
             fontSize: '32px',
             fill: '#fff'
