@@ -17,7 +17,7 @@ class Platformer extends Phaser.Scene {
         // Create a new tilemap game object which uses 18x18 pixel tiles, and is
         // 45 tiles wide and 25 tiles tall.
         this.map = this.add.tilemap("platformer-level-1", 32, 32, 121, 63);
-
+        this.has_died = false;
         // Add a tileset to the map
         // First parameter: name we gave the tileset in Tiled
         // Second parameter: key for the tilesheet (from this.load.image in Load.js)
@@ -56,6 +56,16 @@ class Platformer extends Phaser.Scene {
             frame: 992
         });
 
+
+
+        this.enemies = [];
+        this.spawn_enemy(450, 1000, 150);
+        this.spawn_enemy(1500, 1750, 250);
+        this.spawn_enemy(2431, 1545, 150);
+        this.spawn_enemy(2700, 1799, 200);
+        this.spawn_enemy(1340, 349, 200);
+        this.spawn_enemy(2300, 605, 200);
+        this.spawn_enemy(3050, 1085, 250);
         this.physics.world.enable(this.coin, Phaser.Physics.Arcade.STATIC_BODY);
         this.physics.world.enable(this.water1, Phaser.Physics.Arcade.STATIC_BODY);
 
@@ -163,8 +173,8 @@ class Platformer extends Phaser.Scene {
     update() {
 
         const isOnGround = my.sprite.player.body.blocked.down;
-        console.log("On Ground:", my.sprite.player.body.blocked.down);
 
+        this.move_enemies();
         if(!isOnGround) {
             my.sprite.player.anims.play('jump');
         }
@@ -190,14 +200,15 @@ class Platformer extends Phaser.Scene {
         // player jump
         // note that we need body.blocked rather than body.touching b/c the former applies to tilemap tiles and the latter to the "ground"
         if(!my.sprite.player.body.blocked.down) {
-            console.log("here")
+
             my.sprite.player.anims.play('jump');
         }
         if(my.sprite.player.body.blocked.down && Phaser.Input.Keyboard.JustDown(cursors.up)) {
             my.sprite.player.body.setVelocityY(this.JUMP_VELOCITY);
-            //this.sound.play("jump", {
-            //    volume: 1   // Can adjust volume using this, goes from 0 to 1
-            //});
+            console.log( my.sprite.player.x, my.sprite.player.y);
+            this.sound.play("jump", {
+                volume: 1   // Can adjust volume using this, goes from 0 to 1
+            });
             my.vfx.jump = this.add.particles(my.sprite.player.x, my.sprite.player.y + 40, "kenny-particles", {
                 frame: ["smoke_06.png"],
                 lifespan: 300,
@@ -220,6 +231,39 @@ class Platformer extends Phaser.Scene {
 
     }
 
+
+    move_enemies(){
+        for (let i of this.enemies){
+            if (i.dir < 0){
+                if (i.x <= i.spawn_point_x - i.range){
+                    i.dir = 1;
+                }
+                i.x += 2 * i.dir;
+            }
+            else {
+                if (i.x >= i.spawn_point_x + i.range){
+                    i.dir = -1
+                }
+                i.x += 2 * i.dir;
+
+            }
+            if (this.collides(i, my.sprite.player) && this.has_died == false){
+                this.gameOver();
+                this.has_died = true;
+            }
+        }
+    }
+
+    spawn_enemy(x, y, range){
+        this.en = this.add.sprite(x, y, 'playerAtlas', 'playerGrey_stand.png');
+        this.en.dir = -1;
+        this.en.spawn_point_x = x;
+        this.en.spawn_point_y = y;
+        this.en.range = range;
+        this.enemies.push(this.en);
+
+    }
+
     gameComplete() {
         if(my.sprite.player.y < 300){
             this.add.text(my.sprite.player.x, my.sprite.player.y + 100, 'You Win!', {
@@ -235,11 +279,16 @@ class Platformer extends Phaser.Scene {
         }    
         this.physics.pause(); // Freeze the game
     }
+    collides(a, b) {
+        if (Math.abs(a.x - b.x) > (a.displayWidth/2 + b.displayWidth/2)) return false;
+        if (Math.abs(a.y - b.y) > (a.displayHeight/2 + b.displayHeight/2)) return false;
+        return true;
+    }
 
     gameOver() {
-        this.sound.play("womp", {
-            volume: 1   // Can adjust volume using this, goes from 0 to 1
-        });
+        ///this.sound.play("womp", {
+            //volume: 1   // Can adjust volume using this, goes from 0 to 1
+        //});
         this.add.text(my.sprite.player.x, my.sprite.player.y - 100, 'GAME OVER!', {
             fontSize: '32px',
             fill: '#fff'
