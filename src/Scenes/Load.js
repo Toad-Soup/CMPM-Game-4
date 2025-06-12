@@ -38,6 +38,7 @@ class Load extends Phaser.Scene {
         //this.load.audio("jump", "proud-fart.mp3");
         this.load.audio("womp", "pepSound3.ogg");
         this.load.audio("collect", "powerUp7.ogg");
+        this.load.audio("jump", "phaseJump3.ogg");
 
         this.load.multiatlas("kenny-particles", "kenny-particles.json");
 
